@@ -176,18 +176,18 @@ router.post('/login', function(req, res) {
     let uid = req.body.uid;
     let pswd = req.body.pswd;
     dbModule.getUserInfo(uid, function(user) {
-        //console.log(user);
+        //console.log(user[0]);
         if (user === undefined) {
             let html = alert.alertMsg('아이디가 없습니다.', '/');
             res.send(html);
-        } else if (pswd !== user.password) {
+        } else if (pswd !== user[0].password) {
             let html = alert.alertMsg('패스워드가 일치하지 않습니다.', '/');
             res.send(html);
         } else {                // Login 성공
             //console.log(`${uid} login 성공`);
             req.session.userId = uid;
-            req.session.userName = user.name;
-            let html = alert.alertMsg(`${user.name} 님 환영합니다.`, '/home');
+            req.session.userName = user[0].name;
+            let html = alert.alertMsg(`${user[0].name} 님 환영합니다.`, '/home');
             res.send(html);
         }
     });

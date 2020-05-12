@@ -33,15 +33,65 @@ app.get('/home', function(req, res) {
         let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
         res.send(html);
     } else {
-        dbModule.getCurrentSensor(function(sensor) {
-            dbModule.getCurrentActuator(function(actuator) {
+
                 wm.getWeather(function(weather) {
                     let navBar = template.navBar(true, weather, req.session.userName);
                     let menuLink = template.menuLink(0);
                     let view = require('./view/home');
-                    let html = view.home(navBar, menuLink, sensor, actuator);
+                    let html = view.home(navBar, menuLink);
                     res.send(html);
                 });
+
+    }
+});
+
+app.get('/tank/group/:id', function(req, res) {
+    if (req.session.userId === undefined) {
+        let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
+        res.send(html);
+    } else {
+        let group = parseInt(req.params.id);
+        dbModule.getTanks(group, function(tankData) {
+            wm.getWeather(function(weather) {
+                let navBar = template.navBar(false, weather, req.session.userName);
+                let menuLink = template.menuLink(0);
+                let view = require('./view/tankGroup');
+                let html = view.tankGroup(navBar, menuLink, tankData);
+                res.send(html);
+            });
+        });
+    }
+});
+app.get('/tank/setup/:id', function(req, res) {
+    if (req.session.userId === undefined) {
+        let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
+        res.send(html);
+    } else {
+        let group = parseInt(req.params.id);
+        dbModule.getTanks(group, function(tankData) {
+            wm.getWeather(function(weather) {
+                let navBar = template.navBar(false, weather, req.session.userName);
+                let menuLink = template.menuLink(0);
+                let view = require('./view/tankSetup');
+                let html = view.tankSetup(navBar, menuLink);
+                res.send(html);
+            });
+        });
+    }
+});
+app.get('/tank/oper/:id', function(req, res) {
+    if (req.session.userId === undefined) {
+        let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
+        res.send(html);
+    } else {
+        let group = parseInt(req.params.id);
+        dbModule.getTanks(group, function(tankData) {
+            wm.getWeather(function(weather) {
+                let navBar = template.navBar(false, weather, req.session.userName);
+                let menuLink = template.menuLink(0);
+                let view = require('./view/tankOper');
+                let html = view.tankOper(navBar, menuLink);
+                res.send(html);
             });
         });
     }

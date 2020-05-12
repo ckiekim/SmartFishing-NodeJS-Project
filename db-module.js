@@ -21,11 +21,11 @@ module.exports = {
         });
         return connection;
     },
-    getCustomerById:    function(id, callback) {
+    getUserInfo:    function(uid, callback) {
         const conn = this.getConnection();
-        const sql = 'select * from customer where id = ?';   // DATE_FORMAT(createdDate, '%Y-%m-%d %T')
+        const sql = 'select * from user where uid = ?';   // DATE_FORMAT(createdDate, '%Y-%m-%d %T')
 
-        conn.query(sql, id, function(err, row, fields) {
+        conn.query(sql, uid, function(err, row, fields) {
             if (err)
                 console.log(err);
             else
@@ -33,10 +33,10 @@ module.exports = {
         });
         conn.end();
     },
-    getCustomers:  function(callback) {
+    getTanks:  function(group, callback) {
         const conn = this.getConnection();
-        //const sql = 'select * from customer where isDeleted = 0';   // DATE_FORMAT(createdDate, '%Y-%m-%d %T')
-        const sql = `select id, image, name, birthday, gender, job, DATE_FORMAT(createdDate, '%Y-%m-%d %T') as dt from customer where isDeleted = 0`;
+        let offset = (group - 1) * 10;
+        const sql = `select * from tank limit ${offset}, 10`;   // limit offset, 갯수
 
         conn.query(sql, function(err, rows, fields) {
             if (err)
@@ -46,6 +46,7 @@ module.exports = {
         });
         conn.end();
     },
+
     addCustomer:    function(params, callback) {
         const conn = this.getConnection();
         const sql = 'insert into customer(image, name, birthday, gender, job) values (?, ?, ?, ?, ?)';

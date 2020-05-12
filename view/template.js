@@ -3,7 +3,7 @@ module.exports = {
         let homeLink = isHome ? `<a class="nav-link active" href="#">Home</a>`: `<a class="nav-link" href="/home">Home</a>`;
         return `
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <img src="/greenlogo.png" class="d-inline-block align-top" alt="">&nbsp;&nbsp;&nbsp;
+                <img src="/images/greenlogo.png" class="d-inline-block align-top" alt="">&nbsp;&nbsp;&nbsp;
                 <ul class="nav nav-pills mr-auto">
                     <li class="nav-item">
                         ${homeLink}
@@ -23,13 +23,13 @@ module.exports = {
         `;
     },
     menuLink: function(menu) {
-        let sensorLink = `<a class="nav-link" href="/sensor">센서</a>`;
+        let tankLink = `<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
         let actuatorLink = `<a class="nav-link" href="/actuator">액츄에이터</a>`;
         let userLink = `<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
         let galleryLink = `<a class="nav-link" href="/gallery">갤러리</a>`;
         switch(menu) {
-            case 1:     // Sensor 메뉴를 눌렀을 경우
-                sensorLink = `<a class="nav-link active" href="#">센서</a>`;
+            case 1:     // 수조 메뉴를 눌렀을 경우
+                tankLink = `<a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
                 break;
             case 2:     // Actuator 메뉴를 눌렀을 경우
                 actuatorLink = `<a class="nav-link active" href="#">액츄에이터</a>`;
@@ -45,8 +45,15 @@ module.exports = {
         }
         return `
             <ul class="nav nav-pills flex-column">
-                <li class="nav-item">
-                    ${sensorLink}
+                <li class="nav-item dropdown">
+                    ${tankLink}
+                        수조
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/tank/group/1">모니터링</a>
+                        <a class="dropdown-item" href="/tank/setup/1">설정</a>
+                        <a class="dropdown-item" href="/tank/oper/1">작동</a>
+                    </div>
                 </li>
                 <li class="nav-item">
                     ${actuatorLink}
