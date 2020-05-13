@@ -11,6 +11,7 @@ const sm = require('./serial-module');
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
+const tankRouter = require('./tankRouter');
 const userRouter = require('./userRouter');
 
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
@@ -26,6 +27,7 @@ app.use(session({
     saveUninitialized: true,
     store: new FileStore({logFn: function(){}})
 }));
+app.use('/tank', tankRouter);
 app.use('/user', userRouter);
 
 app.get('/home', function(req, res) {
@@ -45,57 +47,7 @@ app.get('/home', function(req, res) {
     }
 });
 
-app.get('/tank/group/:id', function(req, res) {
-    if (req.session.userId === undefined) {
-        let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
-        res.send(html);
-    } else {
-        let group = parseInt(req.params.id);
-        dbModule.getTanks(group, function(tankData) {
-            wm.getWeather(function(weather) {
-                let navBar = template.navBar(false, weather, req.session.userName);
-                let menuLink = template.menuLink(0);
-                let view = require('./view/tankGroup');
-                let html = view.tankGroup(navBar, menuLink, tankData);
-                res.send(html);
-            });
-        });
-    }
-});
-app.get('/tank/setup/:id', function(req, res) {
-    if (req.session.userId === undefined) {
-        let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
-        res.send(html);
-    } else {
-        let group = parseInt(req.params.id);
-        dbModule.getTanks(group, function(tankData) {
-            wm.getWeather(function(weather) {
-                let navBar = template.navBar(false, weather, req.session.userName);
-                let menuLink = template.menuLink(0);
-                let view = require('./view/tankSetup');
-                let html = view.tankSetup(navBar, menuLink);
-                res.send(html);
-            });
-        });
-    }
-});
-app.get('/tank/oper/:id', function(req, res) {
-    if (req.session.userId === undefined) {
-        let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
-        res.send(html);
-    } else {
-        let group = parseInt(req.params.id);
-        dbModule.getTanks(group, function(tankData) {
-            wm.getWeather(function(weather) {
-                let navBar = template.navBar(false, weather, req.session.userName);
-                let menuLink = template.menuLink(0);
-                let view = require('./view/tankOper');
-                let html = view.tankOper(navBar, menuLink);
-                res.send(html);
-            });
-        });
-    }
-});
+
 
 app.get('/weather', function(req, res) {
     if (req.session.userId === undefined) {

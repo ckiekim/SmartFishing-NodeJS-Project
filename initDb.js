@@ -25,6 +25,19 @@ const createTankSql = `
         oxygen FLOAT NOT NULL
     );
 `;
+const createTankSetup = `
+    CREATE TABLE IF NOT EXISTS tank10Setup (
+        tsid INT PRIMARY KEY AUTO_INCREMENT,
+        operating INT DEFAULT 0,
+        fish VARCHAR(20) NOT NULL,
+        temp FLOAT NOT NULL,
+        ph FLOAT NOT NULL,
+        oxygen FLOAT NOT NULL,
+        food INT NOT NULL,
+        stime DATETIME DEFAULT CURRENT_TIMESTAMP,
+        sinfo INT NOT null
+    );
+`;
 
 const insertDeptSql = "INSERT INTO dept VALUES(?, ?)";
 const insertUserSql = `INSERT INTO user(uid, password, name, deptId, tel) VALUES('admin', '1234', '관리자', 101, '010-2345-6789')`;
