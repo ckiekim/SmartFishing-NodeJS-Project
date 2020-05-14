@@ -3,7 +3,7 @@ const header = template.header();
 
 module.exports.registerUser = function(navBar, menuLink, deptObj) {
     let options = '';
-    for (deptItem of deptObj) {
+    for (let deptItem of deptObj) {
         options += `<option value="${deptItem.did}">${deptItem.name}</option>`;
     }
     return `

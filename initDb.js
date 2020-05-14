@@ -12,6 +12,7 @@ const createUserSql = `
         name VARCHAR(20) NOT NULL,
         deptId INTEGER NOT NULL,
         tel VARCHAR(20),
+        isDeleted INT DEFAULT 0,
         regDate DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY(deptId) REFERENCES dept(did))
 `;
@@ -25,23 +26,19 @@ const createTankSql = `
         oxygen FLOAT NOT NULL
     );
 `;
-const createTankSetup = `
-    CREATE TABLE IF NOT EXISTS tank10Setup (
-        tsid INT PRIMARY KEY AUTO_INCREMENT,
-        operating INT DEFAULT 0,
-        fish VARCHAR(20) NOT NULL,
-        temp FLOAT NOT NULL,
-        ph FLOAT NOT NULL,
-        oxygen FLOAT NOT NULL,
-        food INT NOT NULL,
-        stime DATETIME DEFAULT CURRENT_TIMESTAMP,
-        sinfo INT NOT null
+const createTankSetupSql = `
+    CREATE TABLE tankSetup (
+        tsId INT PRIMARY KEY AUTO_INCREMENT,
+        tsTime DATETIME DEFAULT CURRENT_TIMESTAMP,
+        tsPerson VARCHAR(12) NOT NULL,
+        tsTank JSON NOT NULL
     );
 `;
 
 const insertDeptSql = "INSERT INTO dept VALUES(?, ?)";
 const insertUserSql = `INSERT INTO user(uid, password, name, deptId, tel) VALUES('admin', '1234', '관리자', 101, '010-2345-6789')`;
 const insertTankSql = `INSERT INTO tank VALUES (?, ?, ?, ?, ?, ?)`;
+const insertTankSetupSql = `INSERT INTO tankSetup(tsPerson, tsTank) VALUES(?, ?)`;
 
 const deptData = [
     [101, '경영지원팀'],
@@ -78,11 +75,32 @@ dm.executeQuery(createUserSql, function() {
     });
 }); */
 
-dm.executeQuery(createTankSql, function() {
+/* dm.executeQuery(createTankSql, function() {
     console.log("Tank Table is created");
     for (let tank of tankData) {
         dm.executeQueryWithParams(insertTankSql, tank, function() {
             console.log("tank record inserted");
         });
+    }
+}); */
+
+const tankSetupData = [
+    {tid:1, oper:1, temp:29.5},
+    {tid:2, oper:1, temp:29.9}
+]
+/* dm.executeQuery(createTankSetupSql, function() {
+    console.log("TankSetup Table is created");
+    let tsJson = JSON.stringify(tankSetupData);
+    for (let i=0; i<3; i++) {
+        let params = ['admin'+i, tsJson];
+        dm.executeQueryWithParams(insertTankSetupSql, params, function() {
+            console.log("tankSetup record inserted");
+        });
+    }
+}); */
+dm.getTankSeupData(function(tsList) {
+    for (let tsData of tsList) {
+        console.log(tsData.tsId, tsData.tsTime, tsData.tsPerson);
+        console.log(JSON.parse(tsData.tsTank));
     }
 });

@@ -56,15 +56,16 @@ router.post('/register', function(req, res) {
     //console.log(uid, pswd, pswd2, deptId, tel);
     dbModule.getUserInfo(uid, function(row) {
         //console.log(row);
-        if (row === undefined) {
+        if (row[0] === undefined) {
             if (pswd.length < 4) {
                 let html = alert.alertMsg('패스워드 길이가 너무 작습니다.', '/user/register');
                 res.send(html);
             } else if (pswd === pswd2) {
-                dbModule.registerUser(uid, pswd, name, deptId, tel, function() {
+                let params = [uid, pswd, name, deptId, tel];
+                dbModule.registerUser(params, function() {
                     // 페이지 지원
                     dbModule.getUserCount(function(count) {
-                        let pageNo = Math.ceil(count.count/10);
+                        let pageNo = Math.ceil(count[0].count/10);
                         res.redirect(`/user/list/page/${pageNo}`);
                     });
                 });
@@ -113,9 +114,10 @@ router.post('/update', function(req, res) {
 
     dbModule.getUserInfo(uid, function(user) {
         if (changePswd === undefined) {         // 패스워드 변경 체크박스가 uncheck 되었을 때
-            dbModule.updateUser(uid, user.password, name, deptId, tel, function() {
+            let params = [user[0].password, name, deptId, tel, uid];
+            dbModule.updateUser(params, function() {
                 dbModule.getBeforeUserCount(uid, function(count) {      // 페이지 지원
-                    let pageNo = Math.ceil((count.count + 1) / 10);
+                    let pageNo = Math.ceil((count[0].count + 1) / 10);
                     res.redirect(`/user/list/page/${pageNo}`);
                 });
             });
@@ -130,7 +132,8 @@ router.post('/update', function(req, res) {
                 let html = alert.alertMsg(`신규 입력한 패스워드가 다릅니다.`, `/user/update/uid/${uid}`);
                 res.send(html);
             } else {            // 모든 조건을 만족시켰을 때
-                dbModule.updateUser(uid, pswd, name, deptId, tel, function() {
+                let params = [pswd, name, deptId, tel, uid];
+                dbModule.updateUser(params, function() {
                     dbModule.getBeforeUserCount(uid, function(count) {      // 페이지 지원
                         let pageNo = Math.ceil((count.count + 1) / 10);
                         res.redirect(`/user/list/page/${pageNo}`);

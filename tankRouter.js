@@ -28,22 +28,36 @@ router.get('/setup/:id', function(req, res) {
         res.send(html);
     } else {
         let group = parseInt(req.params.id);
-        dbModule.getTanks(group, function(tankData) {
+        dbModule.getTankSeupData(function(tsData) {
             wm.getWeather(function(weather) {
                 let navBar = template.navBar(false, weather, req.session.userName);
                 let menuLink = template.menuLink(0);
                 let view = require('./view/tankSetup');
-                let html = view.tankSetup(navBar, menuLink);
+                let html = view.tankSetup(navBar, menuLink, tsData[0]);
                 res.send(html);
             });
         });
     }
 });
 router.post('/setup', function(req, res) {
-    console.log(req.body.group);
-    console.log(req.body.tank);
-    console.log(req.body.ph);
-    res.redirect("/tank/group/1");
+    let ts = [];
+    let userId = req.session.userId;
+    for (let i=0; i<req.body.id.length; i++) {
+        let obj = {
+            id: parseInt(req.body.id[i]),
+            oper: parseInt(req.body['oper'+req.body.id[i]]),
+            temp: parseFloat(req.body.temp[i]),
+            ph: parseFloat(req.body.ph[i]),
+            food: parseInt(req.body.food[i])
+        }
+        ts.push(obj);
+    }
+    //console.log(ts);
+    let params = [userId, JSON.stringify(ts)];
+    dbModule.addTankSetupData(params, function() {
+        console.log("tankSetup is inserted.")
+        res.redirect("/tank/group/1");
+    });
 });
 router.get('/oper/:id', function(req, res) {
     if (req.session.userId === undefined) {
