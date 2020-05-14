@@ -36,7 +36,8 @@ module.exports = {
     getUsers:  function(pageNo, callback) {
         const conn = this.getConnection();
         let offset = (pageNo - 1) * 10;
-        const sql = `select * from user where isDeleted=0 limit ${offset}, 10`;   // limit offset, 갯수
+        const sql = `SELECT u.uid, u.name, d.name AS deptName, u.tel, DATE_FORMAT(u.regDate, '%Y-%m-%d') as ts FROM user AS u \
+            INNER JOIN dept AS d ON u.deptId=d.did WHERE u.isDeleted=0 limit ${offset}, 10`;   // limit offset, 갯수
 
         conn.query(sql, function(err, rows, fields) {
             if (err)
@@ -98,7 +99,7 @@ module.exports = {
     },
     getBeforeUserCount: function(uid, callback) {           // 페이지 지원 - update/delete 시
         const conn = this.getConnection();
-        const sql = `select count(*) as \`count\` from user where uid < (select uid from user where uid = ? and isDeleted=0)`;
+        const sql = "select count(*) as \`count\` from user where uid < (select uid from user where uid = ? and isDeleted=0)";
 
         conn.query(sql, uid, function(err, row, fields) {
             if (err)

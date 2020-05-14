@@ -27,7 +27,7 @@ const createTankSql = `
     );
 `;
 const createTankSetupSql = `
-    CREATE TABLE tankSetup (
+    CREATE TABLE IF NOT EXISTS tankSetup (
         tsId INT PRIMARY KEY AUTO_INCREMENT,
         tsTime DATETIME DEFAULT CURRENT_TIMESTAMP,
         tsPerson VARCHAR(12) NOT NULL,
@@ -66,14 +66,14 @@ const tankData = [
             console.log("dept record inserted");
         });
     }
-});
+});*/
 
 dm.executeQuery(createUserSql, function() {
     console.log("User Table is created");
     dm.executeQuery(insertUserSql, function() {
         console.log("user record inserted");
     });
-}); */
+});
 
 /* dm.executeQuery(createTankSql, function() {
     console.log("Tank Table is created");
@@ -84,23 +84,30 @@ dm.executeQuery(createUserSql, function() {
     }
 }); */
 
-const tankSetupData = [
-    {tid:1, oper:1, temp:29.5},
-    {tid:2, oper:1, temp:29.9}
-]
-/* dm.executeQuery(createTankSetupSql, function() {
+/*
+const tankSetupJson = `[
+    {"id": 1, "ph": 5.1, "food": 120, "oper": 1, "temp": 29.1}, 
+    {"id": 2, "ph": 5.2, "food": 140, "oper": 1, "temp": 29.2}, 
+    {"id": 3, "ph": 5.3, "food": 160, "oper": 1, "temp": 29.3}, 
+    {"id": 4, "ph": 5.4, "food": 180, "oper": 1, "temp": 29.4}, 
+    {"id": 5, "ph": 5.5, "food": 200, "oper": 1, "temp": 29.5}, 
+    {"id": 6, "ph": 5.6, "food": 220, "oper": 1, "temp": 29.6}, 
+    {"id": 7, "ph": 5.7, "food": 240, "oper": 1, "temp": 29.7}, 
+    {"id": 8, "ph": 5.8, "food": 260, "oper": 1, "temp": 29.8}, 
+    {"id": 9, "ph": 5.9, "food": 280, "oper": 1, "temp": 29.9}, 
+    {"id": 10, "ph": 6, "food": 300, "oper": 1, "temp": 30}
+]`;
+dm.executeQuery(createTankSetupSql, function() {
     console.log("TankSetup Table is created");
-    let tsJson = JSON.stringify(tankSetupData);
-    for (let i=0; i<3; i++) {
-        let params = ['admin'+i, tsJson];
-        dm.executeQueryWithParams(insertTankSetupSql, params, function() {
-            console.log("tankSetup record inserted");
+    
+    let params = ['admin', tankSetupJson];
+    dm.executeQueryWithParams(insertTankSetupSql, params, function() {
+        dm.getTankSeupData(function(tsList) {
+            for (let tsData of tsList) {
+                console.log(tsData.tsId, tsData.tsTime, tsData.tsPerson);
+                console.log(JSON.parse(tsData.tsTank));
+            }
         });
-    }
-}); */
-dm.getTankSeupData(function(tsList) {
-    for (let tsData of tsList) {
-        console.log(tsData.tsId, tsData.tsTime, tsData.tsPerson);
-        console.log(JSON.parse(tsData.tsTank));
-    }
+    });
 });
+*/

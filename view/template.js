@@ -64,7 +64,6 @@ module.exports = {
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/user/register">등록(C)</a>
-                        <!-- 페이지를 지원하기 위해 /user/list/page/1 으로 변경 -->
                         <a class="dropdown-item" href="/user/list/page/1">조회(R)</a>
                     </div>
                 </li>

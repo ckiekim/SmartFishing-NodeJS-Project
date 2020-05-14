@@ -16,7 +16,7 @@ router.get('/list/page/:page', function(req, res) {        // 로그인만 하�
             let menuLink = template.menuLink(3);
             dbModule.getUsers(pageNo, function(users) {
                 dbModule.getUserCount(function(result) {        // 페이지 지원
-                    let totalPage = Math.ceil(result.count / 10);
+                    let totalPage = Math.ceil(result[0].count / 10);
                     let view = require('./view/listUser');
                     let html = view.listUser(navBar, menuLink, users, totalPage, pageNo);
                     //console.log(rows);
@@ -93,9 +93,9 @@ router.get('/update/uid/:uid', function(req, res) {     // 본인 것만 수정�
             let menuLink = template.menuLink(3);
             dbModule.getAllDepts(function(depts) {
                 dbModule.getUserInfo(uid, function(user) {
-                    //console.log(user);
+                    //console.log(user[0]);
                     let view = require('./view/updateUser');
-                    let html = view.updateUser(navBar, menuLink, depts, user);
+                    let html = view.updateUser(navBar, menuLink, depts, user[0]);
                     res.send(html);
                 });
             });
@@ -116,10 +116,7 @@ router.post('/update', function(req, res) {
         if (changePswd === undefined) {         // 패스워드 변경 체크박스가 uncheck 되었을 때
             let params = [user[0].password, name, deptId, tel, uid];
             dbModule.updateUser(params, function() {
-                dbModule.getBeforeUserCount(uid, function(count) {      // 페이지 지원
-                    let pageNo = Math.ceil((count[0].count + 1) / 10);
-                    res.redirect(`/user/list/page/${pageNo}`);
-                });
+                res.redirect(`/user/list/page/1`);
             });
         } else {    // check 되었을 때
             if (oldPswd !== user.password) {    // 현재 패스워드가 틀렸을 때
@@ -134,10 +131,7 @@ router.post('/update', function(req, res) {
             } else {            // 모든 조건을 만족시켰을 때
                 let params = [pswd, name, deptId, tel, uid];
                 dbModule.updateUser(params, function() {
-                    dbModule.getBeforeUserCount(uid, function(count) {      // 페이지 지원
-                        let pageNo = Math.ceil((count.count + 1) / 10);
-                        res.redirect(`/user/list/page/${pageNo}`);
-                    });
+                    res.redirect(`/user/list/page/1`);
                 });
             }
         }
@@ -168,11 +162,8 @@ router.get('/delete/uid/:uid', function(req, res) {     // 관리자로 로그�
 });
 router.post('/delete', function(req, res) {
     let uid = req.body.uid;
-    dbModule.getBeforeUserCount(uid, function(count) {      // 페이지 지원
-        let pageNo = Math.ceil(count.count / 10);
-        dbModule.deleteUser(uid, function() {
-            res.redirect(`/user/list/page/${pageNo}`);
-        });
+    dbModule.deleteUser(uid, function() {
+        res.redirect(`/user/list/page/1`);
     });
 });
 router.post('/login', function(req, res) {
