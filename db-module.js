@@ -33,6 +33,94 @@ module.exports = {
         });
         conn.end();
     },
+    getUsers:  function(pageNo, callback) {
+        const conn = this.getConnection();
+        let offset = (pageNo - 1) * 10;
+        const sql = `select * from user where isDeleted=0 limit ${offset}, 10`;   // limit offset, 갯수
+
+        conn.query(sql, function(err, rows, fields) {
+            if (err)
+                console.log(err);
+            else
+                callback(rows);
+        });
+        conn.end();
+    },
+    getUserCount:  function(callback) {
+        const conn = this.getConnection();
+        const sql = `select count(*) as \`count\` from user where isDeleted=0`;
+
+        conn.query(sql, function(err, rows, fields) {
+            if (err)
+                console.log(err);
+            else
+                callback(rows);
+        });
+        conn.end();
+    },
+    registerUser:    function(params, callback) {
+        const conn = this.getConnection();
+        const sql = `insert into user(uid, password, name, deptId, tel) values (?, ?, ?, ?, ?)`;
+
+        conn.query(sql, params, function(err, result) {
+            if (err)
+                console.log(err);
+            else {
+                //console.log('registerUser(),', result);
+                callback();
+            }
+        });
+        conn.end();
+    },
+    updateUser: function(params, callback) {
+        const conn = this.getConnection();
+        const sql = `update user set password=?, name=?, deptId=?, tel=? where uid = ?`;
+
+        conn.query(sql, params, function(err, result) {
+            if (err)
+                console.log(err);
+            else
+                callback();
+        });
+        conn.end();
+    },
+    deleteUser: function(uid, callback) {
+        const conn = this.getConnection();
+        const sql = `update user set isDeleted=1 where uid = ?`;
+
+        conn.query(sql, uid, function(err, result) {
+            if (err)
+                console.log(err);
+            else
+                callback();
+        });
+        conn.end();
+    },
+    getBeforeUserCount: function(uid, callback) {           // 페이지 지원 - update/delete 시
+        const conn = this.getConnection();
+        const sql = `select count(*) as \`count\` from user where uid < (select uid from user where uid = ? and isDeleted=0)`;
+
+        conn.query(sql, uid, function(err, row, fields) {
+            if (err)
+                console.log(err);
+            else
+                callback(row);
+        });
+        conn.end();
+    },
+    getAllDepts:  function(callback) {
+        const conn = this.getConnection();
+        const sql = `select * from dept`;
+
+        conn.query(sql, function(err, rows, fields) {
+            if (err)
+                console.log(err);
+            else
+                callback(rows);
+        });
+        conn.end();
+    },
+
     getTanks:  function(group, callback) {
         const conn = this.getConnection();
         let offset = (group - 1) * 10;
@@ -46,45 +134,35 @@ module.exports = {
         });
         conn.end();
     },
-
-    addCustomer:    function(params, callback) {
+    getTankSeupData: function(callback) {
         const conn = this.getConnection();
-        const sql = 'insert into customer(image, name, birthday, gender, job) values (?, ?, ?, ?, ?)';
+        const sql = `select tsId, date_format(tsTime, '%Y-%m-%d %T') as tsTime, tsPerson, tsTank from tankSetup order by tsid desc limit 1`;
 
+        conn.query(sql, function(err, rows, fields) {
+            if (err)
+                console.log(err);
+            else {
+                callback(rows);
+            }
+        });
+        conn.end();
+    },
+    addTankSetupData: function(params, callback) {
+        const conn = this.getConnection();
+        const sql = `insert into tankSetup(tsPerson, tsTank) values (?, ?)`;
         conn.query(sql, params, function(err, result) {
             if (err)
                 console.log(err);
             else {
-                //console.log('addCustomer(),', result);
+                //console.log('addTankSetupData(),', result);
                 callback();
             }
         });
         conn.end();
     },
-    deleteCustomer: function(id, callback) {
-        const conn = this.getConnection();
-        const sql = 'update customer set isDeleted=1 where id = ?';
 
-        conn.query(sql, id, function(err, result) {
-            if (err)
-                console.log(err);
-            else
-                callback();
-        });
-        conn.end();
-    },
-    updateCustomer: function(params, callback) {
-        const conn = this.getConnection();
-        const sql = 'update customer set image=?, name=?, birthday=?, gender=?, job=? where id = ?';
-
-        conn.query(sql, params, function(err, result) {
-            if (err)
-                console.log(err);
-            else
-                callback();
-        });
-        conn.end();
-    },
+    
+    
 
     executeQuery: function(sql, callback) {
         const conn = this.getConnection();
