@@ -181,8 +181,9 @@ router.post('/login', function(req, res) {
             //console.log(`${uid} login 성공`);
             req.session.userId = uid;
             req.session.userName = user[0].name;
-            let html = alert.alertMsg(`${user[0].name} 님 환영합니다.`, '/home');
-            res.send(html);
+            //let html = alert.alertMsg(`${user[0].name} 님 환영합니다.`, '/home');
+            //res.send(html);
+            res.redirect('/home');
         }
     });
 });

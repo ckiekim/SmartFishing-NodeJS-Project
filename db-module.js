@@ -51,11 +51,11 @@ module.exports = {
         const conn = this.getConnection();
         const sql = `select count(*) as \`count\` from user where isDeleted=0`;
 
-        conn.query(sql, function(err, rows, fields) {
+        conn.query(sql, function(err, row, fields) {
             if (err)
                 console.log(err);
             else
-                callback(rows);
+                callback(row);
         });
         conn.end();
     },
@@ -161,7 +161,20 @@ module.exports = {
         });
         conn.end();
     },
+    getTankSenseData: function(tankNo, callback) {
+        const conn = this.getConnection();
+        const sql = `select * from (select stemp, sph, date_format(stime, '%Y-%m-%d %T') as stime \
+            from senseTable where stank=? order by sid desc limit 10) as subview order by stime`;
 
+        conn.query(sql, tankNo, function(err, rows, fields) {
+            if (err)
+                console.log(err);
+            else {
+                callback(rows);
+            }
+        });
+        conn.end();
+    },
     
     
 

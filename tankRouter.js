@@ -14,7 +14,7 @@ router.get('/group/:id', function(req, res) {
         dbModule.getTanks(group, function(tankData) {
             wm.getWeather(function(weather) {
                 let navBar = template.navBar(false, weather, req.session.userName);
-                let menuLink = template.menuLink(0);
+                let menuLink = template.menuLink(1);
                 let view = require('./view/tankGroup');
                 let html = view.tankGroup(navBar, menuLink, tankData);
                 res.send(html);
@@ -31,7 +31,7 @@ router.get('/setup/:id', function(req, res) {
         dbModule.getTankSeupData(function(tsData) {
             wm.getWeather(function(weather) {
                 let navBar = template.navBar(false, weather, req.session.userName);
-                let menuLink = template.menuLink(0);
+                let menuLink = template.menuLink(1);
                 let view = require('./view/tankSetup');
                 let html = view.tankSetup(navBar, menuLink, tsData[0]);
                 res.send(html);
@@ -68,9 +68,26 @@ router.get('/oper/:id', function(req, res) {
         dbModule.getTanks(group, function(tankData) {
             wm.getWeather(function(weather) {
                 let navBar = template.navBar(false, weather, req.session.userName);
-                let menuLink = template.menuLink(0);
+                let menuLink = template.menuLink(1);
                 let view = require('./view/tankOper');
                 let html = view.tankOper(navBar, menuLink);
+                res.send(html);
+            });
+        });
+    }
+});
+router.get('/sense/:id', function(req, res) {
+    if (req.session.userId === undefined) {
+        let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
+        res.send(html);
+    } else {
+        let tank = parseInt(req.params.id);
+        dbModule.getTankSenseData(tank, function(senseData) {
+            wm.getWeather(function(weather) {
+                let navBar = template.navBar(false, weather, req.session.userName);
+                let menuLink = template.menuLink(1);
+                let view = require('./view/tankSense');
+                let html = view.tankSense(navBar, menuLink, tank, senseData);
                 res.send(html);
             });
         });

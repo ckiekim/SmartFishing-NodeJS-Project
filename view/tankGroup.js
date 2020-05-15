@@ -20,8 +20,9 @@ const tankFunc = function(tank) {
                 - pH: ${tank.ph}<br>
                 - 산소: ${tank.oxygen}</p>
                 <p align="center">
-                    <span style="color:skyblue"><a href="/tank/setup/${tank.tid}" style="color: inherit"><i class="fas fa-cog"></i></a></span>&nbsp;&nbsp;&nbsp;
-                    <span style="color:skyblue"><a href="/tank/oper/${tank.tid}" style="color: inherit"><i class="fas fa-wrench"></i></a></span>
+                    <span style="color:skyblue"><a href="/tank/setup/${tank.tid}" style="color: inherit"><i class="fas fa-cog"></i></a></span>&nbsp;&nbsp;
+                    <span style="color:skyblue"><a href="/tank/oper/${tank.tid}" style="color: inherit"><i class="fas fa-wrench"></i></a></span>&nbsp;&nbsp;
+                    <span style="color:skyblue"><a href="/tank/sense/${tank.tid}" style="color: inherit"><i class="fas fa-chart-line"></i></a></span>
                 </p>
             </div>
         </div>    

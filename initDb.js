@@ -34,6 +34,15 @@ const createTankSetupSql = `
         tsTank JSON NOT NULL
     );
 `;
+const createSenseTableSql = `
+    CREATE TABLE IF NOT EXISTS senseTable (
+        sid INT PRIMARY KEY AUTO_INCREMENT,
+        stank INT NOT NULL,
+        stemp FLOAT NOT NULL,
+        sph FLOAT NOT NULL,
+        stime DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+`;
 
 const insertDeptSql = "INSERT INTO dept VALUES(?, ?)";
 const insertUserSql = `INSERT INTO user(uid, password, name, deptId, tel) VALUES('admin', '1234', '관리자', 101, '010-2345-6789')`;
@@ -68,12 +77,12 @@ const tankData = [
     }
 });*/
 
-dm.executeQuery(createUserSql, function() {
+/* dm.executeQuery(createUserSql, function() {
     console.log("User Table is created");
     dm.executeQuery(insertUserSql, function() {
         console.log("user record inserted");
     });
-});
+}); */
 
 /* dm.executeQuery(createTankSql, function() {
     console.log("Tank Table is created");
@@ -111,3 +120,25 @@ dm.executeQuery(createTankSetupSql, function() {
     });
 });
 */
+
+let senseData = [];
+for (let i=0; i<15; i++) {
+    for (let k=1; k<=10; k++) {
+        let record = [];
+        record.push(k);
+        record.push(Math.random().toFixed(1)*3.0 + 28.0);
+        record.push(Math.random().toFixed(1)*2.0 + 4.5);
+        let hour = (i < 10) ? `0${i}` : `${i}`;
+        record.push(`2020-05-15 ${hour}:00:00`);
+        senseData.push(record);
+    }
+}
+const insertSenseTableSql = `INSERT INTO senseTable(stank, stemp, sph, stime) VALUES (?, ?, ?, ?)`;
+dm.executeQuery(createSenseTableSql, function() {
+    console.log("Sense Table is created");
+    for (let item of senseData) {
+        dm.executeQueryWithParams(insertSenseTableSql, item, function() {
+            process.stdout.write("+ ");
+        });
+    }
+});

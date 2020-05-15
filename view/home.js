@@ -24,7 +24,7 @@ module.exports.home = function(navBar, menuLink) {
                         <tr>
                             <td>
                                 <div class="card" style="width: 18rem;">
-                                    <img src="/images/watertank.jpg" class="card-img-top" alt="수조">
+                                    <img src="/images/tank.jpg" class="card-img-top" alt="수조">
                                     <div class="card-body">
                                         <h5 class="card-title">수조</h5>
                                         <h6 class="card-subtitle mb-2 text-muted">수조 1~10</h6>
@@ -36,12 +36,12 @@ module.exports.home = function(navBar, menuLink) {
                             </td>
                             <td>
                                 <div class="card" style="width: 18rem;">
-                                    <img src="/images/watertank.jpg" class="card-img-top" alt="수조">
+                                    <img src="/images/purifier.jpg" class="card-img-top" alt="정수장">
                                     <div class="card-body">
-                                        <h5 class="card-title">수조</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">수조 11~20</h6>
+                                        <h5 class="card-title">정수장</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">정수장</h6>
                                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                        <a href="/tank/group/1" class="card-link">Monitoring</a>
+                                        <a href="#" class="card-link">Monitoring</a>
                                         <a href="#" class="card-link">Another link</a>
                                     </div>
                                 </div>

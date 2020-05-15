@@ -24,14 +24,14 @@ module.exports = {
     },
     menuLink: function(menu) {
         let tankLink = `<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
-        let actuatorLink = `<a class="nav-link" href="/actuator">액츄에이터</a>`;
+        let actuatorLink = `<a class="nav-link" href="/actuator">정수장</a>`;
         let userLink = `<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
         let galleryLink = `<a class="nav-link" href="/gallery">갤러리</a>`;
         switch(menu) {
             case 1:     // 수조 메뉴를 눌렀을 경우
                 tankLink = `<a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
                 break;
-            case 2:     // Actuator 메뉴를 눌렀을 경우
+            case 2:     // 정수장 메뉴를 눌렀을 경우
                 actuatorLink = `<a class="nav-link active" href="#">액츄에이터</a>`;
                 break;
             case 3:     // User 메뉴를 눌렀을 경우
@@ -53,6 +53,7 @@ module.exports = {
                         <a class="dropdown-item" href="/tank/group/1">모니터링</a>
                         <a class="dropdown-item" href="/tank/setup/1">설정</a>
                         <a class="dropdown-item" href="/tank/oper/1">작동</a>
+                        <a class="dropdown-item" href="/tank/sense/1">센싱 그래프</a>
                     </div>
                 </li>
                 <li class="nav-item">

@@ -30,6 +30,9 @@ dm.updateUser(params, () => {
     });
 });
 */
-dm.getBeforeUserCount('sales', count => {
+/* dm.getBeforeUserCount('sales', count => {
     console.log(count[0].count);
-})
+}) */
+dm.getTankSenseData(1, rows => {
+    console.log(rows);
+});
