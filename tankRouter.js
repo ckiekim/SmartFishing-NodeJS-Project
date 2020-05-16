@@ -55,7 +55,7 @@ router.post('/setup', function(req, res) {
     //console.log(ts);
     let params = [userId, JSON.stringify(ts)];
     dbModule.addTankSetupData(params, function() {
-        console.log("tankSetup is inserted.")
+        //console.log("tankSetup is inserted.")
         res.redirect("/tank/group/1");
     });
 });
