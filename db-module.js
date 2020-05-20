@@ -175,7 +175,20 @@ module.exports = {
         });
         conn.end();
     },
-    
+    getTankStatus: function(group, callback) {
+        const conn = this.getConnection();
+        const sql = `select * from (select stank, stemp, sph, date_format(stime, '%Y-%m-%d %T') as stime \
+            from senseTable order by stime desc limit 10) as subview order by stank`;
+
+        conn.query(sql, function(err, rows, fields) {
+            if (err)
+                console.log(err);
+            else {
+                callback(rows);
+            }
+        });
+        conn.end();
+    },
     
 
     executeQuery: function(sql, callback) {

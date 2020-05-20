@@ -25,7 +25,7 @@ module.exports.deleteUser = function(navBar, menuLink, uid) {
                         <input type="hidden" name="uid" value="${uid}"><br>
                         <p style="text-align: center;">${uid} 사용자를 삭제하시겠습니까?</p><br>
                         <p style="text-align: center;"><input class="btn btn-primary" type="submit" value="확인">&nbsp;&nbsp;&nbsp;
-                            <button class="btn btn-secondary" type="reset" onclick="location.href='/user/list'">취소</button></p>
+                            <button class="btn btn-secondary" type="reset" onclick="location.href='/user/list/page/1'">취소</button></p>
                     </form>
                     </div>
                     <div class="col-6"></div>

@@ -33,6 +33,10 @@ dm.updateUser(params, () => {
 /* dm.getBeforeUserCount('sales', count => {
     console.log(count[0].count);
 }) */
-dm.getTankSenseData(1, rows => {
+/* dm.getTankSenseData(1, rows => {
     console.log(rows);
+}); */
+
+dm.getUserInfo('rnd', function(user) {
+    console.log(user[0]);
 });

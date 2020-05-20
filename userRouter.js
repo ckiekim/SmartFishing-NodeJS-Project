@@ -171,7 +171,7 @@ router.post('/login', function(req, res) {
     let pswd = req.body.pswd;
     dbModule.getUserInfo(uid, function(user) {
         //console.log(user[0]);
-        if (user === undefined) {
+        if (user[0] === undefined) {
             let html = alert.alertMsg('아이디가 없습니다.', '/');
             res.send(html);
         } else if (pswd !== user[0].password) {

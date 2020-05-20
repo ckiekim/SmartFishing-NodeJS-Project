@@ -95,16 +95,16 @@ const tankData = [
 
 /*
 const tankSetupJson = `[
-    {"id": 1, "ph": 5.1, "food": 120, "oper": 1, "temp": 29.1}, 
-    {"id": 2, "ph": 5.2, "food": 140, "oper": 1, "temp": 29.2}, 
-    {"id": 3, "ph": 5.3, "food": 160, "oper": 1, "temp": 29.3}, 
-    {"id": 4, "ph": 5.4, "food": 180, "oper": 1, "temp": 29.4}, 
-    {"id": 5, "ph": 5.5, "food": 200, "oper": 1, "temp": 29.5}, 
-    {"id": 6, "ph": 5.6, "food": 220, "oper": 1, "temp": 29.6}, 
-    {"id": 7, "ph": 5.7, "food": 240, "oper": 1, "temp": 29.7}, 
-    {"id": 8, "ph": 5.8, "food": 260, "oper": 1, "temp": 29.8}, 
-    {"id": 9, "ph": 5.9, "food": 280, "oper": 1, "temp": 29.9}, 
-    {"id": 10, "ph": 6, "food": 300, "oper": 1, "temp": 30}
+    {"id": 1, "ph": 5.1, "fish": "장어 치어", "oper": 1, "temp": 29.1}, 
+    {"id": 2, "ph": 5.2, "fish": "장어 소", "oper": 1, "temp": 29.2}, 
+    {"id": 3, "ph": 5.3, "fish": "장어 소", "oper": 1, "temp": 29.3}, 
+    {"id": 4, "ph": 5.4, "fish": "장어 중", "oper": 1, "temp": 29.4}, 
+    {"id": 5, "ph": 5.5, "fish": "장어 중", "oper": 1, "temp": 29.5}, 
+    {"id": 6, "ph": 5.6, "fish": "없음", "oper": 1, "temp": 29.6}, 
+    {"id": 7, "ph": 5.7, "fish": "장어 중", "oper": 1, "temp": 29.7}, 
+    {"id": 8, "ph": 5.8, "fish": "장어 대", "oper": 1, "temp": 29.8}, 
+    {"id": 9, "ph": 5.9, "fish": "장어 대", "oper": 1, "temp": 29.9}, 
+    {"id": 10, "ph": 6, "fish": "장어 대", "oper": 1, "temp": 30}
 ]`;
 dm.executeQuery(createTankSetupSql, function() {
     console.log("TankSetup Table is created");
