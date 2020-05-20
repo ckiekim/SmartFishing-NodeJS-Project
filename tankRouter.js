@@ -52,14 +52,14 @@ router.post('/setup', function(req, res) {
             oper: parseInt(req.body['oper'+req.body.id[i]]),
             temp: parseFloat(req.body.temp[i]),
             ph: parseFloat(req.body.ph[i]),
-            fish: req.body.food[i]
+            fish: req.body.fish[i]
         }
         ts.push(obj);
     }
     //console.log(ts);
     let params = [userId, JSON.stringify(ts)];
     dbModule.addTankSetupData(params, function() {
-        //console.log("tankSetup is inserted.")
+        //console.log("tankSetup data is inserted.")
         res.redirect("/tank/group/1");
     });
 });
