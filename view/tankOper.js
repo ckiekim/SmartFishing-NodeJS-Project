@@ -3,8 +3,8 @@ const header = template.header();
 
 module.exports.tankOper = function(navBar, menuLink, id, tankSetupData, statusData) {
     let setupTime = tankSetupData[0].tsTime;
-    let senseTime = statusData[0].stime;
-    setup = JSON.parse(tankSetupData[0].tsTank);
+    let senseTime = statusData[9].stime;
+    let setup = JSON.parse(tankSetupData[0].tsTank);
     //console.log(setup[id-1]);
     let temp = setup[id-1].temp;
     let ph = setup[id-1].ph;
@@ -67,27 +67,27 @@ module.exports.tankOper = function(navBar, menuLink, id, tankSetupData, statusDa
                     <tbody>
                         <tr>
                             <td rowspan="3" style="text-align: center; font-weight: bold">수온<br>(28.0 ~ 31.0&#8451)</td>
-                            <td class="col-2"><input style="text-align: center;" type="text" name="temp" value="${status.stemp}"></td>
+                            <td class="col-2"><input style="text-align: center;" type="text" name="temp" value="${status.stemp.toFixed(1)}"></td>
                         </tr>
                         <tr>
                             <td><div class="progress">
-                                <div class="progress-bar bg-primary" role="progressbar" style="width: ${(status.stemp-28)/(31-28)*100}%" aria-valuemin="28" aria-valuemax="31">${status.stemp}</div>
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: ${(status.stemp-28)/(31-28)*100}%" aria-valuemin="28" aria-valuemax="31">${status.stemp.toFixed(1)}</div>
                             </div></td>
                         </tr>
                         <tr>
-                            <td><input type="range" class="form-control-range" name="temp" min="28" max="31" step="0.1" value="${status.stemp}"></td>
+                            <td><input type="range" class="form-control-range" name="temp" min="28" max="31" step="0.1" value="${status.stemp.toFixed(1)}"></td>
                         </tr>
                         <tr>
                             <td rowspan="3" style="text-align: center; font-weight: bold">pH<br>(4.5 ~ 6.5)</td>
-                            <td class="col-2"><input style="text-align: center;" type="text" name="ph" value="${status.sph}"></td>
+                            <td class="col-2"><input style="text-align: center;" type="text" name="ph" value="${status.sph.toFixed(1)}"></td>
                         </tr>
                         <tr>
                             <td><div class="progress">
-                                <div class="progress-bar bg-danger" role="progressbar" style="width: ${(status.sph-4.5)/(6.5-4.5)*100}%" aria-valuemin="4.5" aria-valuemax="6.5">${status.sph}</div>
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: ${(status.sph-4.5)/(6.5-4.5)*100}%" aria-valuemin="4.5" aria-valuemax="6.5">${status.sph.toFixed(1)}</div>
                             </div></td>
                         </tr>
                         <tr>
-                            <td><input type="range" class="form-control-range" name="ph" min="4.5" max="6.5" step="0.1" value="${status.sph}"></td>
+                            <td><input type="range" class="form-control-range" name="ph" min="4.5" max="6.5" step="0.1" value="${status.sph.toFixed(1)}"></td>
                         </tr>
                         <tr><td colspan="2" style="text-align: center;"><button type="submit" class="btn btn-primary">설정</button></td></tr>
                     </tbody>
@@ -128,7 +128,7 @@ var myChart = new Chart(ctx, {
             label: '설정값',
             fill: false,
             data: [${sphs}],
-            borderColor: 'rgba(75, 192, 192, 1)',
+            borderColor: 'rgba(255, 159, 64, 1)',
             borderWidth: 1,
             pointRadius: 0
         }]
@@ -137,7 +137,8 @@ var myChart = new Chart(ctx, {
         scales: {
             yAxes: [{
                 ticks: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    max: 35
                 }
             }]
         }

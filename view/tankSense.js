@@ -1,15 +1,21 @@
 const template = require('./template');
 const header = template.header();
 
-module.exports.tankSense = function(navBar, menuLink, tank, senseData) {
+module.exports.tankSense = function(navBar, menuLink, tank, tankSetupData, senseData) {
+    let setup = JSON.parse(tankSetupData[0].tsTank);
+    let temp = setup[tank-1].temp;
+    let ph = setup[tank-1].ph;
     let labels = '';
-    let temps = '';
-    let phs = '';
+    let temps = ''; let stemps = '';
+    let phs = ''; let sphs = '';
     for (let sense of senseData) {
         labels += sense.stime.substring(11,13) + ', ';
         temps += sense.stemp + ', ';
-        phs += sense.sph + ', '
+        phs += sense.sph + ', ';
+        stemps += temp + ', ';
+        sphs += ph + ', ';
     }
+    let date = senseData[9].stime.substring(0,10);
     let lis = '';
     for (let i=1; i<=10; i++) {
         lis += (i == tank) ?
@@ -58,20 +64,42 @@ module.exports.tankSense = function(navBar, menuLink, tank, senseData) {
                                 fill: false,
                                 data: [${temps}],
                                 borderColor: 'rgba(255, 99, 132, 1)',
-                                borderWidth: 2
+                                borderWidth: 3
+                            }, {
+                                label: '설정값',
+                                fill: false,
+                                data: [${stemps}],
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 2,
+                                pointRadius: 0
                             }, {
                                 label: 'pH',
                                 fill: false,
                                 data: [${phs}],
                                 borderColor: 'rgba(54, 162, 235, 1)',
-                                borderWidth: 2
+                                borderWidth: 3
+                            }, {
+                                label: '설정값',
+                                fill: false,
+                                data: [${sphs}],
+                                borderColor: 'rgba(255, 159, 64, 1)',
+                                borderWidth: 2,
+                                pointRadius: 0
                             }]
                         },
                         options: {
                             scales: {
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        fontSize: 16,
+                                        labelString: '${date}'
+                                    }
+                                }],
                                 yAxes: [{
                                     ticks: {
-                                        beginAtZero: true
+                                        beginAtZero: true,
+                                        max: 35
                                     }
                                 }]
                             }

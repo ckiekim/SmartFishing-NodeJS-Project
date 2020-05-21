@@ -8,6 +8,8 @@ const template = require('./view/template');
 const wm = require('./weather-module');
 const dbModule = require('./db-module');
 const sm = require('./serial-module');
+const request = require('request');
+const cheerio = require('cheerio');
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
@@ -36,19 +38,77 @@ app.get('/home', function(req, res) {
         let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
         res.send(html);
     } else {
-
-                wm.getWeather(function(weather) {
-                    let navBar = template.navBar(true, weather, req.session.userName);
-                    let menuLink = template.menuLink(0);
-                    let view = require('./view/home');
-                    let html = view.home(navBar, menuLink);
-                    res.send(html);
-                });
-
+        wm.getWeather(function(weather) {
+            let navBar = template.navBar(true, weather, req.session.userName);
+            let menuLink = template.menuLink(template.DUMMY);
+            let view = require('./view/home');
+            let html = view.home(navBar, menuLink);
+            res.send(html);
+        });
     }
 });
-
-
+app.get('/select', function(req, res) {
+    if (req.session.userId === undefined) {
+        let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
+        res.send(html);
+    } else {
+        let args = {
+            uri: 'https://lipsum.com/1', 
+            method: 'GET', 
+            timeout: 2000,
+            encoding: "utf-8"
+        };
+        request(args, function(err, response, body) {
+            if (err) {
+                console.log(err);
+                let html = alert.alertMsg(err, '/home');
+                res.send(html);
+            } else {
+                console.log('statusCode:', response && response.statusCode);
+                let tmp = cheerio.load(body);
+                //console.log(tmp('#lipsumTextarea').text());
+                wm.getWeather(function(weather) {
+                    let navBar = template.navBar(false, weather, req.session.userName);
+                    let menuLink = template.menuLink(template.SELECT_MENU);
+                    let view = require('./view/select');
+                    let html = view.select(navBar, menuLink, tmp('#lipsumTextarea').text());
+                    res.send(html);
+                });
+            }
+        });
+    }
+});
+app.get('/food', function(req, res) {
+    if (req.session.userId === undefined) {
+        let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
+        res.send(html);
+    } else {
+        let args = {
+            uri: 'http://localhost:9000',
+            method: 'GET', 
+            timeout: 2000,
+            encoding: "utf-8"
+        };
+        request(args, function(err, response, body) {
+            if (err) {
+                console.log(err);
+                let html = alert.alertMsg(err, '/home');
+                res.send(html);
+            } else {
+                console.log('statusCode:', response && response.statusCode);
+                let tmp = cheerio.load(body);
+                //console.log(tmp('#lipsumTextarea').text());
+                wm.getWeather(function(weather) {
+                    let navBar = template.navBar(false, weather, req.session.userName);
+                    let menuLink = template.menuLink(template.FOOD_MENU);
+                    let view = require('./view/food');
+                    let html = view.food(navBar, menuLink, tmp('#lipsumTextarea').text());
+                    res.send(html);
+                });
+            }
+        });
+    }
+});
 
 app.get('/weather', function(req, res) {
     if (req.session.userId === undefined) {

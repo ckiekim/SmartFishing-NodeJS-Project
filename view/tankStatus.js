@@ -3,9 +3,9 @@ const header = template.header();
 const tankFunc = function(setup, status) {
     //console.log(setup, status);
     let bg = '';
-    if (status.stemp > 30.8 || status.stemp < 28.2 || status.sph < 4.7 || status.sph > 6.3)
+    if (status.stemp > 30.9 || status.stemp < 28.1 || status.sph < 4.6 || status.sph > 6.4)
         bg = 'bg-danger';
-    else if (status.stemp > 30.5 || status.stemp < 28.5 || status.sph < 4.9 || status.sph > 6.1)
+    else if (status.stemp > 30.8 || status.stemp < 28.2 || status.sph < 4.7 || status.sph > 6.3)
         bg = 'bg-warning';
     else
         bg = 'bg-success';

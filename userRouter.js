@@ -13,7 +13,7 @@ router.get('/list/page/:page', function(req, res) {        // 로그인만 하�
         let pageNo = parseInt(req.params.page);
         wm.getWeather(function(weather) {
             let navBar = template.navBar(false, weather, req.session.userName);
-            let menuLink = template.menuLink(3);
+            let menuLink = template.menuLink(template.USER_MENU);
             dbModule.getUsers(pageNo, function(users) {
                 dbModule.getUserCount(function(result) {        // 페이지 지원
                     let totalPage = Math.ceil(result[0].count / 10);
@@ -36,7 +36,7 @@ router.get('/register', function(req, res) {    // 관리자로 로그인해야 
     } else {
         wm.getWeather(function(weather) {
             let navBar = template.navBar(false, weather, req.session.userName);
-            let menuLink = template.menuLink(3);
+            let menuLink = template.menuLink(template.USER_MENU);
             dbModule.getAllDepts(function(rows) {
                 let view = require('./view/registerUser');
                 let html = view.registerUser(navBar, menuLink, rows);
@@ -90,7 +90,7 @@ router.get('/update/uid/:uid', function(req, res) {     // 본인 것만 수정�
     } else {
         wm.getWeather(function(weather) {
             let navBar = template.navBar(false, weather, req.session.userName);
-            let menuLink = template.menuLink(3);
+            let menuLink = template.menuLink(template.USER_MENU);
             dbModule.getAllDepts(function(depts) {
                 dbModule.getUserInfo(uid, function(user) {
                     //console.log(user[0]);
@@ -152,7 +152,7 @@ router.get('/delete/uid/:uid', function(req, res) {     // 관리자로 로그�
         } else {
             wm.getWeather(function(weather) {
                 let navBar = template.navBar(false, weather, req.session.userName);
-                let menuLink = template.menuLink(3);
+                let menuLink = template.menuLink(template.USER_MENU);
                 let view = require('./view/deleteUser');
                 let html = view.deleteUser(navBar, menuLink, uid);  
                 res.send(html);

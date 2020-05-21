@@ -1,4 +1,11 @@
 module.exports = {
+    DUMMY: 0,
+    TANK_MENU: 1,
+    PURIFY_MENU: 2,
+    SELECT_MENU: 3,
+    FOOD_MENU: 4,
+    USER_MENU: 5,
+    GALLERY_MENU: 6,
     navBar: function(isHome, weather, userName) {
         let homeLink = isHome ? `<a class="nav-link active" href="#">Home</a>`: `<a class="nav-link" href="/home">Home</a>`;
         return `
@@ -12,32 +19,39 @@ module.exports = {
                         <a class="nav-link" href="/user/logout">로그아웃</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"> </a>
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">${userName}님</a>
                     </li>
                 </ul>
                 <div class="navbar-text">
-                    <p>${weather}</p>
-                    <p>${userName}님 환영합니다.</p>
+                    ${weather}
                 </div>
             </nav>
         `;
     },
     menuLink: function(menu) {
         let tankLink = `<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
-        let actuatorLink = `<a class="nav-link" href="/actuator">정수장</a>`;
+        let purifyLink = `<a class="nav-link" href="#">정수장</a>`;
+        let selectLink = `<a class="nav-link" href="/select">선별장</a>`;
+        let foodLink = `<a class="nav-link" href="/food">사료실</a>`;
         let userLink = `<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
-        let galleryLink = `<a class="nav-link" href="/gallery">갤러리</a>`;
+        let galleryLink = `<a class="nav-link" href="#">갤러리</a>`;
         switch(menu) {
-            case 1:     // 수조 메뉴를 눌렀을 경우
+            case this.TANK_MENU:     // 수조 메뉴를 눌렀을 경우
                 tankLink = `<a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
                 break;
-            case 2:     // 정수장 메뉴를 눌렀을 경우
-                actuatorLink = `<a class="nav-link active" href="#">액츄에이터</a>`;
+            case this.PURIFY_MENU:     // 정수장 메뉴를 눌렀을 경우
+                purifyLink = `<a class="nav-link active" href="#">정수장</a>`;
                 break;
-            case 3:     // User 메뉴를 눌렀을 경우
+            case this.SELECT_MENU:     // 선별장 메뉴를 눌렀을 경우
+                selectLink = `<a class="nav-link active" href="#">선별장</a>`;
+                break;
+            case this.FOOD_MENU:     // 사료실 메뉴를 눌렀을 경우
+                foodLink = `<a class="nav-link active" href="#">사료실</a>`;
+                break;
+            case this.USER_MENU:     // User 메뉴를 눌렀을 경우
                 userLink = `<a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
                 break;
-            case 4:     // Gallery 메뉴를 눌렸을 경우
+            case this.GALLERY_MENU:     // Gallery 메뉴를 눌렸을 경우
                 galleryLink = `<a class="nav-link active" href="#">갤러리</a>`;
                 break;
             default:
@@ -57,7 +71,13 @@ module.exports = {
                     </div>
                 </li>
                 <li class="nav-item">
-                    ${actuatorLink}
+                    ${purifyLink}
+                </li>
+                <li class="nav-item">
+                    ${selectLink}
+                </li>
+                <li class="nav-item">
+                    ${foodLink}
                 </li>
                 <li class="nav-item dropdown">
                     ${userLink}
@@ -98,5 +118,3 @@ module.exports = {
         `;
     }
 }
-//<script src="/popper/popper.min.js"></script>
-//<script src="/js/bootstrap.min.js"></script>
