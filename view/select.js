@@ -21,7 +21,8 @@ module.exports.select = function(navBar, menuLink, result) {
                     <div class="col-12"><hr></div>
                     <div class="col-1"></div>
                     <div class="col-8">
-                        ${result}
+                        <h5>Lorem Ipsum 사이트로부터 받은 데이터</h5>
+                        <p>${result}</p>
                     </div>
                     <div class="col-3"></div>
                 </div>

@@ -178,11 +178,11 @@ router.post('/login', function(req, res) {
             let html = alert.alertMsg('패스워드가 일치하지 않습니다.', '/');
             res.send(html);
         } else {                // Login 성공
-            //console.log(`${uid} login 성공`);
             req.session.userId = uid;
             req.session.userName = user[0].name;
             //let html = alert.alertMsg(`${user[0].name} 님 환영합니다.`, '/home');
             //res.send(html);
+            console.log(req.session.userId);
             res.redirect('/home');
         }
     });

@@ -30,7 +30,7 @@ module.exports = {
     },
     menuLink: function(menu) {
         let tankLink = `<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
-        let purifyLink = `<a class="nav-link" href="#">정수장</a>`;
+        let purifyLink = `<a class="nav-link" href="/purify">정수장</a>`;
         let selectLink = `<a class="nav-link" href="/select">선별장</a>`;
         let foodLink = `<a class="nav-link" href="/food">사료실</a>`;
         let userLink = `<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
