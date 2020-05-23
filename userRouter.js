@@ -1,7 +1,7 @@
 const express = require('express');
-const dbModule = require('./db-module');
-const alert = require('./view/alertMsg');
-const template = require('./view/template');
+const dm = require('./db-module');
+const alert = require('./view/common/alertMsg');
+const template = require('./view/common/template');
 const wm = require('./weather-module');
 
 const router = express.Router();
@@ -14,10 +14,10 @@ router.get('/list/page/:page', function(req, res) {        // 로그인만 하�
         wm.getWeather(function(weather) {
             let navBar = template.navBar(false, weather, req.session.userName);
             let menuLink = template.menuLink(template.USER_MENU);
-            dbModule.getUsers(pageNo, function(users) {
-                dbModule.getUserCount(function(result) {        // 페이지 지원
+            dm.getUsers(pageNo, function(users) {
+                dm.getUserCount(function(result) {        // 페이지 지원
                     let totalPage = Math.ceil(result[0].count / 10);
-                    let view = require('./view/listUser');
+                    let view = require('./view/user/listUser');
                     let html = view.listUser(navBar, menuLink, users, totalPage, pageNo);
                     //console.log(rows);
                     res.send(html);
@@ -37,8 +37,8 @@ router.get('/register', function(req, res) {    // 관리자로 로그인해야 
         wm.getWeather(function(weather) {
             let navBar = template.navBar(false, weather, req.session.userName);
             let menuLink = template.menuLink(template.USER_MENU);
-            dbModule.getAllDepts(function(rows) {
-                let view = require('./view/registerUser');
+            dm.getAllDepts(function(rows) {
+                let view = require('./view/user/registerUser');
                 let html = view.registerUser(navBar, menuLink, rows);
                 //console.log(rows);
                 res.send(html);
@@ -54,7 +54,7 @@ router.post('/register', function(req, res) {
     let deptId = parseInt(req.body.dept);
     let tel = req.body.tel;
     //console.log(uid, pswd, pswd2, deptId, tel);
-    dbModule.getUserInfo(uid, function(row) {
+    dm.getUserInfo(uid, function(row) {
         //console.log(row);
         if (row[0] === undefined) {
             if (pswd.length < 4) {
@@ -62,9 +62,9 @@ router.post('/register', function(req, res) {
                 res.send(html);
             } else if (pswd === pswd2) {
                 let params = [uid, pswd, name, deptId, tel];
-                dbModule.registerUser(params, function() {
+                dm.registerUser(params, function() {
                     // 페이지 지원
-                    dbModule.getUserCount(function(count) {
+                    dm.getUserCount(function(count) {
                         let pageNo = Math.ceil(count[0].count/10);
                         res.redirect(`/user/list/page/${pageNo}`);
                     });
@@ -91,10 +91,10 @@ router.get('/update/uid/:uid', function(req, res) {     // 본인 것만 수정�
         wm.getWeather(function(weather) {
             let navBar = template.navBar(false, weather, req.session.userName);
             let menuLink = template.menuLink(template.USER_MENU);
-            dbModule.getAllDepts(function(depts) {
-                dbModule.getUserInfo(uid, function(user) {
+            dm.getAllDepts(function(depts) {
+                dm.getUserInfo(uid, function(user) {
                     //console.log(user[0]);
-                    let view = require('./view/updateUser');
+                    let view = require('./view/user/updateUser');
                     let html = view.updateUser(navBar, menuLink, depts, user[0]);
                     res.send(html);
                 });
@@ -112,10 +112,10 @@ router.post('/update', function(req, res) {
     let deptId = parseInt(req.body.dept);
     let tel = req.body.tel;
 
-    dbModule.getUserInfo(uid, function(user) {
+    dm.getUserInfo(uid, function(user) {
         if (changePswd === undefined) {         // 패스워드 변경 체크박스가 uncheck 되었을 때
             let params = [user[0].password, name, deptId, tel, uid];
-            dbModule.updateUser(params, function() {
+            dm.updateUser(params, function() {
                 res.redirect(`/user/list/page/1`);
             });
         } else {    // check 되었을 때
@@ -130,7 +130,7 @@ router.post('/update', function(req, res) {
                 res.send(html);
             } else {            // 모든 조건을 만족시켰을 때
                 let params = [pswd, name, deptId, tel, uid];
-                dbModule.updateUser(params, function() {
+                dm.updateUser(params, function() {
                     res.redirect(`/user/list/page/1`);
                 });
             }
@@ -153,7 +153,7 @@ router.get('/delete/uid/:uid', function(req, res) {     // 관리자로 로그�
             wm.getWeather(function(weather) {
                 let navBar = template.navBar(false, weather, req.session.userName);
                 let menuLink = template.menuLink(template.USER_MENU);
-                let view = require('./view/deleteUser');
+                let view = require('./view/user/deleteUser');
                 let html = view.deleteUser(navBar, menuLink, uid);  
                 res.send(html);
             });
@@ -162,14 +162,14 @@ router.get('/delete/uid/:uid', function(req, res) {     // 관리자로 로그�
 });
 router.post('/delete', function(req, res) {
     let uid = req.body.uid;
-    dbModule.deleteUser(uid, function() {
+    dm.deleteUser(uid, function() {
         res.redirect(`/user/list/page/1`);
     });
 });
 router.post('/login', function(req, res) {
     let uid = req.body.uid;
     let pswd = req.body.pswd;
-    dbModule.getUserInfo(uid, function(user) {
+    dm.getUserInfo(uid, function(user) {
         //console.log(user[0]);
         if (user[0] === undefined) {
             let html = alert.alertMsg('아이디가 없습니다.', '/');

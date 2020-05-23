@@ -1,15 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const axios = require('axios');
+const cheerio = require('cheerio');
 const favicon = require('express-favicon');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
-const alert = require('./view/alertMsg');
-const template = require('./view/template');
+
+const alert = require('./view/common/alertMsg');
+const template = require('./view/common/template');
 const wm = require('./weather-module');
-const dbModule = require('./db-module');
+const dm = require('./db-module');
 //const sm = require('./serial-module');
-const axios = require('axios');
-const cheerio = require('cheerio');
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
@@ -122,7 +123,7 @@ app.get('/weather', function(req, res) {
         let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
         res.send(html);
     } else {
-        let view = require('./view/weather');
+        let view = require('./view/common/weather');
         wm.getWeather(function(weather) {
             let navBar = template.navBar(false, weather, req.session.userName);
             let menuLink = template.menuLink(0);

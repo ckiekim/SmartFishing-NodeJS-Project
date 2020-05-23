@@ -1,4 +1,4 @@
-const dm = require('./db-module.js');
+const dm = require('../db-module.js');
 const readline = require("readline");
 const rl = readline.createInterface({
     input: process.stdin,

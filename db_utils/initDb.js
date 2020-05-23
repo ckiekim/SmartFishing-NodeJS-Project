@@ -1,4 +1,4 @@
-const dm = require('./db-module.js');
+const dm = require('../db-module.js');
 
 const createDeptSql = `
     CREATE TABLE IF NOT EXISTS dept (

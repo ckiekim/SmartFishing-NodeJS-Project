@@ -1,7 +1,7 @@
 const express = require('express');
-const dbModule = require('./db-module');
-const alert = require('./view/alertMsg');
-const template = require('./view/template');
+const dm = require('./db-module');
+const alert = require('./view/common/alertMsg');
+const template = require('./view/common/template');
 const wm = require('./weather-module');
 
 const router = express.Router();
@@ -11,14 +11,14 @@ router.get('/group/:id', function(req, res) {
         res.send(html);
     } else {
         let group = parseInt(req.params.id);
-        dbModule.getTankSeupData(function(tankSetupData) {
-            dbModule.getTankStatus(group, function(tankStatus) {
+        dm.getTankSeupData(function(tankSetupData) {
+            dm.getTankStatus(group, function(tankStatus) {
                 wm.getWeather(function(weather) {
                     let navBar = template.navBar(false, weather, req.session.userName);
                     let menuLink = template.menuLink(template.TANK_MENU);
                     //console.log(tankSetupData);
                     //console.log(tankStatus);
-                    let view = require('./view/tankStatus');
+                    let view = require('./view/tank/tankStatus');
                     let html = view.tankStatus(navBar, menuLink, tankSetupData, tankStatus);
                     res.send(html);
                 });
@@ -32,11 +32,11 @@ router.get('/setup/:id', function(req, res) {
         res.send(html);
     } else {
         let group = parseInt(req.params.id);
-        dbModule.getTankSeupData(function(tsData) {
+        dm.getTankSeupData(function(tsData) {
             wm.getWeather(function(weather) {
                 let navBar = template.navBar(false, weather, req.session.userName);
                 let menuLink = template.menuLink(template.TANK_MENU);
-                let view = require('./view/tankSetup');
+                let view = require('./view/tank/tankSetup');
                 let html = view.tankSetup(navBar, menuLink, tsData[0]);
                 res.send(html);
             });
@@ -58,7 +58,7 @@ router.post('/setup', function(req, res) {
     }
     //console.log(ts);
     let params = [userId, JSON.stringify(ts)];
-    dbModule.addTankSetupData(params, function() {
+    dm.addTankSetupData(params, function() {
         //console.log("tankSetup data is inserted.")
         res.redirect("/tank/group/1");
     });
@@ -69,14 +69,14 @@ router.get('/oper/:id', function(req, res) {
         res.send(html);
     } else {
         let id = parseInt(req.params.id);
-        dbModule.getTankSeupData(function(tankSetupData) {
-            dbModule.getTankSenseData(id, function(tankStatus) {
+        dm.getTankSeupData(function(tankSetupData) {
+            dm.getTankSenseData(id, function(tankStatus) {
                 wm.getWeather(function(weather) {
                     let navBar = template.navBar(false, weather, req.session.userName);
                     let menuLink = template.menuLink(template.TANK_MENU);
                     //console.log(tankSetupData);
                     //console.log(tankStatus);
-                    let view = require('./view/tankOper');
+                    let view = require('./view/tank/tankOper');
                     let html = view.tankOper(navBar, menuLink, id, tankSetupData, tankStatus);
                     res.send(html);
                 });
@@ -90,12 +90,12 @@ router.get('/sense/:id', function(req, res) {
         res.send(html);
     } else {
         let id = parseInt(req.params.id);
-        dbModule.getTankSeupData(function(tankSetupData) {
-            dbModule.getTankSenseData(id, function(senseData) {
+        dm.getTankSeupData(function(tankSetupData) {
+            dm.getTankSenseData(id, function(senseData) {
                 wm.getWeather(function(weather) {
                     let navBar = template.navBar(false, weather, req.session.userName);
                     let menuLink = template.menuLink(template.TANK_MENU);
-                    let view = require('./view/tankSense');
+                    let view = require('./view/tank/tankSense');
                     let html = view.tankSense(navBar, menuLink, id, tankSetupData, senseData);
                     res.send(html);
                 });

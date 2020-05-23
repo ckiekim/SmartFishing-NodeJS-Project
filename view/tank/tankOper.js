@@ -1,9 +1,10 @@
-const template = require('./template');
+const template = require('../common/template');
 const header = template.header();
 
 module.exports.tankOper = function(navBar, menuLink, id, tankSetupData, statusData) {
     let setupTime = tankSetupData[0].tsTime;
-    let senseTime = statusData[9].stime;
+    let len = statusData.length;
+    let senseTime = statusData[len - 1].stime;
     let setup = JSON.parse(tankSetupData[0].tsTank);
     //console.log(setup[id-1]);
     let temp = setup[id-1].temp;
@@ -12,14 +13,14 @@ module.exports.tankOper = function(navBar, menuLink, id, tankSetupData, statusDa
     let labels = '';
     let temps = ''; let stemps = '';
     let phs = ''; let sphs = '';
-    let status;
-    for (status of statusData) {
+    for (let status of statusData) {
         labels += status.stime.substring(11,13) + ', ';
         temps += status.stemp + ', ';
         phs += status.sph + ', ';
         stemps += temp + ', ';
         sphs += ph + ', ';
     }
+    let status = statusData[len - 1];
     let lis = '';
     for (let i=1; i<=10; i++) {
         lis += (i == id) ?

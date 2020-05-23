@@ -1,4 +1,4 @@
-const template = require('./template');
+const template = require('../common/template');
 const header = template.header();
 const tankFunc = function(setup, status) {
     //console.log(setup, status);

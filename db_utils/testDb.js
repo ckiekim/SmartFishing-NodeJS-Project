@@ -1,4 +1,4 @@
-const dm = require('./db-module.js');
+const dm = require('../db-module.js');
 /*
 dm.getUserCount((count) => {
     console.log(count[0].count);
