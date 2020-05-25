@@ -3,6 +3,7 @@ const dm = require('./db-module');
 const alert = require('./view/common/alertMsg');
 const template = require('./view/common/template');
 const wm = require('./weather-module');
+const logging = require('./winston-logging');
 
 const router = express.Router();
 router.get('/group/:id', function(req, res) {
@@ -16,8 +17,8 @@ router.get('/group/:id', function(req, res) {
                 wm.getWeather(function(weather) {
                     let navBar = template.navBar(false, weather, req.session.userName);
                     let menuLink = template.menuLink(template.TANK_MENU);
-                    //console.log(tankSetupData);
-                    //console.log(tankStatus);
+                    logging.silly(JSON.stringify(tankSetupData));
+                    logging.silly(JSON.stringify(tankStatus));
                     let view = require('./view/tank/tankStatus');
                     let html = view.tankStatus(navBar, menuLink, tankSetupData, tankStatus);
                     res.send(html);
@@ -56,10 +57,10 @@ router.post('/setup', function(req, res) {
         }
         ts.push(obj);
     }
-    //console.log(ts);
+    logging.silly(ts);
     let params = [userId, JSON.stringify(ts)];
     dm.addTankSetupData(params, function() {
-        //console.log("tankSetup data is inserted.")
+        logging.silly("tankSetup data is inserted.")
         res.redirect("/tank/group/1");
     });
 });
@@ -74,8 +75,8 @@ router.get('/oper/:id', function(req, res) {
                 wm.getWeather(function(weather) {
                     let navBar = template.navBar(false, weather, req.session.userName);
                     let menuLink = template.menuLink(template.TANK_MENU);
-                    //console.log(tankSetupData);
-                    //console.log(tankStatus);
+                    logging.silly(JSON.stringify(tankSetupData));
+                    logging.silly(JSON.stringify(tankStatus));
                     let view = require('./view/tank/tankOper');
                     let html = view.tankOper(navBar, menuLink, id, tankSetupData, tankStatus);
                     res.send(html);

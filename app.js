@@ -6,11 +6,11 @@ const favicon = require('express-favicon');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 
+const logging = require('./winston-logging');
 const alert = require('./view/common/alertMsg');
 const template = require('./view/common/template');
 const wm = require('./weather-module');
 const dm = require('./db-module');
-//const sm = require('./serial-module');
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
@@ -28,7 +28,7 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: new FileStore({logFn: function(){}})
 }));
 app.use('/tank', tankRouter);
@@ -54,8 +54,8 @@ app.get('/purify', function(req, res) {
         res.send(html);
     } else {
         axios.get('http://172.17.5.16').then(response => {
-            console.log('statusCode:', response && response.status);
-            console.log(response.data);
+            logging.debug(`statusCode: ${response && response.status}`);
+            logging.silly(JSON.stringify(response.data));
             wm.getWeather(function(weather) {
                 let navBar = template.navBar(false, weather, req.session.userName);
                 let menuLink = template.menuLink(template.PURIFY_MENU);
@@ -64,7 +64,7 @@ app.get('/purify', function(req, res) {
                 res.send(html);
             });
         }).catch(error => {
-            console.error(error.errno, error.code);
+            logging.info(error.errno, error.code);
             let html = alert.alertMsg(error.message, '/home');
             res.send(html);
         });
@@ -76,11 +76,11 @@ app.get('/select', function(req, res) {
         res.send(html);
     } else {
         axios.get('https://lipsum.com/2').then(response => {
-            console.log('statusCode:', response && response.status);
+            logging.debug(`statusCode: ${response && response.status}`);
             let tmp = cheerio.load(response.data);
             let text = tmp('#lipsumTextarea').text();
             text = text.replace('\n\n', '\n<br><br>\n');
-            //console.log(tmp('#lipsumTextarea').text());
+            logging.silly(tmp('#lipsumTextarea').text());
             wm.getWeather(function(weather) {
                 let navBar = template.navBar(false, weather, req.session.userName);
                 let menuLink = template.menuLink(template.SELECT_MENU);
@@ -89,7 +89,7 @@ app.get('/select', function(req, res) {
                 res.send(html);
             });
         }).catch(error => {
-            console.error(error.errno, error.code);
+            logging.info(error.errno, error.code);
             let html = alert.alertMsg(error.message, '/home');
             res.send(html);
         });
@@ -101,8 +101,7 @@ app.get('/food', function(req, res) {
         res.send(html);
     } else {
         axios.get('http://localhost:9000').then(response => {
-            console.log('statusCode:', response && response.status);
-            let tmp = cheerio.load(response.data);
+            logging.debug(`statusCode: ${response && response.status}`);
             wm.getWeather(function(weather) {
                 let navBar = template.navBar(false, weather, req.session.userName);
                 let menuLink = template.menuLink(template.FOOD_MENU);
@@ -111,7 +110,7 @@ app.get('/food', function(req, res) {
                 res.send(html);
             });
         }).catch(error => {
-            console.error(error.errno, error.code);
+            logging.info(error.errno, error.code);
             let html = alert.alertMsg(error.message, '/home');
             res.send(html);
         });
@@ -138,4 +137,5 @@ app.get('/weather', function(req, res) {
 app.get('*', function(req, res) {
     res.status(404).send('File not found');
 });
-app.listen(3000);
+const port = process.env.PORT || 3000;
+app.listen(port, () => logging.debug(`Listening on port ${port}...`));

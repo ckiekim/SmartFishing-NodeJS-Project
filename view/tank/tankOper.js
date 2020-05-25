@@ -9,7 +9,7 @@ module.exports.tankOper = function(navBar, menuLink, id, tankSetupData, statusDa
     //console.log(setup[id-1]);
     let temp = setup[id-1].temp;
     let ph = setup[id-1].ph;
-    console.log(statusData);
+    //console.log(statusData);
     let labels = '';
     let temps = ''; let stemps = '';
     let phs = ''; let sphs = '';

@@ -3,6 +3,7 @@ const dm = require('./db-module');
 const alert = require('./view/common/alertMsg');
 const template = require('./view/common/template');
 const wm = require('./weather-module');
+const logging = require('./winston-logging');
 
 const router = express.Router();
 router.get('/list/page/:page', function(req, res) {        // 로그인만 하면 누구나 할 수 있음.
@@ -19,7 +20,7 @@ router.get('/list/page/:page', function(req, res) {        // 로그인만 하�
                     let totalPage = Math.ceil(result[0].count / 10);
                     let view = require('./view/user/listUser');
                     let html = view.listUser(navBar, menuLink, users, totalPage, pageNo);
-                    //console.log(rows);
+                    logging.silly(JSON.stringify(users));
                     res.send(html);
                 });
             });
@@ -40,7 +41,7 @@ router.get('/register', function(req, res) {    // 관리자로 로그인해야 
             dm.getAllDepts(function(rows) {
                 let view = require('./view/user/registerUser');
                 let html = view.registerUser(navBar, menuLink, rows);
-                //console.log(rows);
+                logging.silly(JSON.stringify(rows));
                 res.send(html);
             });
         });
@@ -53,9 +54,9 @@ router.post('/register', function(req, res) {
     let name = req.body.name;
     let deptId = parseInt(req.body.dept);
     let tel = req.body.tel;
-    //console.log(uid, pswd, pswd2, deptId, tel);
+    logging.silly(uid, pswd, pswd2, deptId, tel);
     dm.getUserInfo(uid, function(row) {
-        //console.log(row);
+        logging.silly(row);
         if (row[0] === undefined) {
             if (pswd.length < 4) {
                 let html = alert.alertMsg('패스워드 길이가 너무 작습니다.', '/user/register');
@@ -93,7 +94,7 @@ router.get('/update/uid/:uid', function(req, res) {     // 본인 것만 수정�
             let menuLink = template.menuLink(template.USER_MENU);
             dm.getAllDepts(function(depts) {
                 dm.getUserInfo(uid, function(user) {
-                    //console.log(user[0]);
+                    logging.silly(user[0]);
                     let view = require('./view/user/updateUser');
                     let html = view.updateUser(navBar, menuLink, depts, user[0]);
                     res.send(html);
@@ -170,7 +171,7 @@ router.post('/login', function(req, res) {
     let uid = req.body.uid;
     let pswd = req.body.pswd;
     dm.getUserInfo(uid, function(user) {
-        //console.log(user[0]);
+        logging.silly(user[0]);
         if (user[0] === undefined) {
             let html = alert.alertMsg('아이디가 없습니다.', '/');
             res.send(html);
@@ -180,9 +181,7 @@ router.post('/login', function(req, res) {
         } else {                // Login 성공
             req.session.userId = uid;
             req.session.userName = user[0].name;
-            //let html = alert.alertMsg(`${user[0].name} 님 환영합니다.`, '/home');
-            //res.send(html);
-            console.log(req.session.userId);
+            logging.info(`Login: ${req.session.userId}, ${req.session.userName}`);
             res.redirect('/home');
         }
     });
