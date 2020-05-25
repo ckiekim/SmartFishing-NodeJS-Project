@@ -187,6 +187,7 @@ router.post('/login', function(req, res) {
     });
 });
 router.get('/logout', function(req, res) {
+    logging.info(`Logout: ${req.session.userId}`);
     req.session.destroy();
     res.redirect('/');    
 });
