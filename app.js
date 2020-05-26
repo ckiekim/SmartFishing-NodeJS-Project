@@ -64,7 +64,7 @@ app.get('/purify', function(req, res) {
                 res.send(html);
             });
         }).catch(error => {
-            logging.info(error.errno, error.code);
+            logging.info(`${error.code}: ${error.message}`);
             let html = alert.alertMsg(error.message, '/home');
             res.send(html);
         });
@@ -89,7 +89,7 @@ app.get('/select', function(req, res) {
                 res.send(html);
             });
         }).catch(error => {
-            logging.info(error.errno, error.code);
+            logging.info(`${error.code}: ${error.message}`);
             let html = alert.alertMsg(error.message, '/home');
             res.send(html);
         });
@@ -110,7 +110,7 @@ app.get('/food', function(req, res) {
                 res.send(html);
             });
         }).catch(error => {
-            logging.info(error.errno, error.code);
+            logging.info(`${error.code}: ${error.message}`);
             let html = alert.alertMsg(error.message, '/home');
             res.send(html);
         });
