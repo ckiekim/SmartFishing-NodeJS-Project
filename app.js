@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const favicon = require('express-favicon');
+const cookie = require('cookie');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 
