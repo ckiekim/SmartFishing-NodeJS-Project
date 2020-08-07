@@ -33,8 +33,8 @@ module.exports.tankSense = function(navBar, menuLink, tank, tankSetupData, sense
     <script src="/chartjs/Chart.min.js"></script>
 </head>
 <body>
+${navBar}
 <div class="container">
-    ${navBar}
 	<div class="row" style="margin-top: 30px">
         <div class="col-2">
             ${menuLink}

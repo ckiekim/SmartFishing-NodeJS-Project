@@ -15,7 +15,7 @@ const dm = require('./db-module');
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(cookieParser('1q2w3e4r5t6y'));      // 괄호안은 암호화할 때 사용되는 Key 값
+app.use(cookieParser('1q2w3e4r5t6y'));
 const tankRouter = require('./tankRouter');
 const userRouter = require('./userRouter');
 
@@ -28,9 +28,9 @@ app.use('/fontawesome', express.static(__dirname + '/node_modules/@fortawesome/f
 app.use(express.static(__dirname + '/public'));
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(session({
-    secret: '1q2w3e4r5t6y',     // keyboard cat
+    secret: 'keyboard cat',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: new FileStore({logFn: function(){}})
 }));
 app.use('/tank', tankRouter);
@@ -42,13 +42,14 @@ app.get('/home', function(req, res) {
         res.send(html);
     } else {
         wm.getWeather(function(weather) {
-            //let count = req.signedCookies.count ? parseInt(req.signedCookies.count) + 1 : 1;
-            //res.cookie('count', count, {signed: true});
-            req.session.count = req.session.count ? req.session.count + 1 : 1;
+            let count = req.signedCookies.count ? parseInt(req.signedCookies.count) + 1 : 1;
+            res.cookie('count', count, {signed: true});
+            //console.log('Cookies: ', req.cookies);
+            //console.log('Signed Cookies: ', req.signedCookies);
             let navBar = template.navBar(true, weather, req.session.userName);
             let menuLink = template.menuLink(template.DUMMY);
             let view = require('./view/home');
-            let html = view.home(navBar, menuLink, req.session.count);
+            let html = view.home(navBar, menuLink, count);
             res.send(html);
         });
     }

@@ -38,8 +38,8 @@ module.exports.tankOper = function(navBar, menuLink, id, tankSetupData, statusDa
     <script src="/chartjs/Chart.min.js"></script>
 </head>
 <body>
+${navBar}
 <div class="container">
-    ${navBar}
 	<div class="row" style="margin-top: 30px">
         <div class="col-2">
             ${menuLink}

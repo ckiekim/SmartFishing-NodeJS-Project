@@ -46,8 +46,8 @@ module.exports.tankSetup = function(navBar, menuLink, tsData) {
     </style>
 </head>
 <body>
+${navBar}
 <div class="container">
-    ${navBar}
 	<div class="row" style="margin-top: 30px">
         <div class="col-2">
             ${menuLink}

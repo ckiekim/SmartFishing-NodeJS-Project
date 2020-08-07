@@ -30,8 +30,8 @@ module.exports.gallery = function(navBar, menuLink, result) {
 	${header}
 </head>
 <body>
+    ${navBar}
     <div class="container">
-        ${navBar}
         <div class="row" style="margin-top: 30px">
             <div class="col-2">
                 ${menuLink}

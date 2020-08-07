@@ -9,8 +9,8 @@ module.exports.deleteUser = function(navBar, menuLink, uid) {
     ${header}
 </head>
 <body>
+    ${navBar}
     <div class="container">
-        ${navBar}
         <div class="row" style="margin-top: 30px">
             <div class="col-2">
                 ${menuLink}
