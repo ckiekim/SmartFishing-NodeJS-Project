@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const favicon = require('express-favicon');
-const cookie = require('cookie');
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 
@@ -15,6 +15,7 @@ const dm = require('./db-module');
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(cookieParser('1q2w3e4r5t6y'));
 const tankRouter = require('./tankRouter');
 const userRouter = require('./userRouter');
 
@@ -41,10 +42,14 @@ app.get('/home', function(req, res) {
         res.send(html);
     } else {
         wm.getWeather(function(weather) {
+            let count = req.signedCookies.count ? parseInt(req.signedCookies.count) + 1 : 1;
+            res.cookie('count', count, {signed: true});
+            //console.log('Cookies: ', req.cookies);
+            //console.log('Signed Cookies: ', req.signedCookies);
             let navBar = template.navBar(true, weather, req.session.userName);
             let menuLink = template.menuLink(template.DUMMY);
             let view = require('./view/home');
-            let html = view.home(navBar, menuLink);
+            let html = view.home(navBar, menuLink, count);
             res.send(html);
         });
     }

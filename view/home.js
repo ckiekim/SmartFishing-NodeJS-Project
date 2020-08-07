@@ -1,7 +1,7 @@
 const template = require('./common/template');
 const header = template.header();
 
-module.exports.home = function(navBar, menuLink) {
+module.exports.home = function(navBar, menuLink, count) {
     return `
 <!DOCTYPE html>
 <html lang="ko">
@@ -17,7 +17,7 @@ ${navBar}
         </div>
         <div class="col-10">
             <div class="row" style="margin-left: 10px">
-                <div class="col-12"><h3>아쿠아피쉬 상태</h3></div>
+                <div class="col-12"><h3>아쿠아피쉬 상태 ${count}</h3></div>
                 <div class="col-12"><hr></div>
                 <div class="col-11">
                     <table class="table table-borderless">
