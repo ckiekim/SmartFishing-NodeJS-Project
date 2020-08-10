@@ -182,7 +182,9 @@ router.post('/login', function(req, res) {
             req.session.userId = uid;
             req.session.userName = user[0].name;
             logging.info(`Login: ${req.session.userId}, ${req.session.userName}`);
-            res.redirect('/home');
+            req.session.save(function() {
+                res.redirect('/home');
+            });
         }
     });
 });
