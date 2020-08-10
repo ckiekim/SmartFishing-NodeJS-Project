@@ -44,11 +44,11 @@ app.get('/home', function(req, res) {
         wm.getWeather(function(weather) {
             //let count = req.signedCookies.count ? parseInt(req.signedCookies.count) + 1 : 1;
             //res.cookie('count', count, {signed: true});
-            req.session.count = req.session.count ? req.session.count + 1 : 1;
+            //req.session.count = req.session.count ? req.session.count + 1 : 1;
             let navBar = template.navBar(true, weather, req.session.userName);
             let menuLink = template.menuLink(template.DUMMY);
             let view = require('./view/home');
-            let html = view.home(navBar, menuLink, req.session.count);
+            let html = view.home(navBar, menuLink);
             res.send(html);
         });
     }
